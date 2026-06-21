@@ -8,4 +8,17 @@ end
 # to this method
 class Array
   # Define my_each here
+  def my_each
+    if block_given?
+      for i in self do
+      yield(i)
+      end
+    else 
+      self.to_enum
+    end
+  end
 end
+
+array = [1,2,3,4]
+each_results = array.my_each
+p each_results
