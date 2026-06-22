@@ -3,14 +3,14 @@ module Enumerable
   def my_each_with_index
     count = 0
     if block_given?
-      self.my_each do |i|
+      my_each do |i|
         idx = count
         yield(i, idx)
         count += 1
       end
     else
       arr = []
-      self.my_each do |i|
+      my_each do |i|
         idx = count
         arr << [i, idx]
         count += 1
@@ -22,61 +22,61 @@ module Enumerable
   def my_select
     if block_given?
       result = []
-      self.my_each do |elem|
+      my_each do |elem|
         result << elem if yield(elem)
       end
-      return result
+      result
     else
-      self.to_enum
+      to_enum
     end
   end
 
   def my_all?
-    if block_given?
-      self.my_each{|elem| return false if !yield(elem)} 
-      return true
-    else
-      return true
-    end
+    return true unless block_given?
+
+    my_each { |elem| return false unless yield(elem) }
+    true
   end
 
-  def my_any? 
-    if block_given?
-      self.my_each{|elem| return true if yield(elem)}
-      return false
-    else
-      return true
-    end
+  def my_any?
+    return true unless block_given?
+
+    my_each { |elem| return true if yield(elem) }
+    false
   end
 
   def my_none?
-    if block_given?
-      self.my_any?{|elem| return false if yield(elem)}
-      return true
-    else 
-      return false
-    end
+    return false unless block_given?
+
+    my_any? { |elem| return false if yield(elem) }
+    true
   end
 
-  def my_count
-    if block_given?
-      result = self.my_select{|elem| yield(elem)}
-      return result.size
-    else
-      return self.size
-    end
+  def my_count(&block)
+    return size unless block_given?
+
+    result = my_select(&block)
+    result.size
   end
 
   def my_map
     if block_given?
       result = []
-      self.my_each do |elem|
+      my_each do |elem|
         result << yield(elem)
       end
-      return result
+      result
     else
-      self.to_enum
+      to_enum
     end
+  end
+
+  def my_inject(init)
+    accum = init
+    my_each do |elem|
+      accum = yield(accum, elem)
+    end
+    accum
   end
 end
 
@@ -91,11 +91,8 @@ class Array
       for elem in self do
         yield(elem)
       end
-    else 
-      self.to_enum
+    else
+      to_enum
     end
   end
 end
-
-array = [2,3,4,5]
-p array.my_map(&:odd?)
