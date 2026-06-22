@@ -66,6 +66,18 @@ module Enumerable
       return self.size
     end
   end
+
+  def my_map
+    if block_given?
+      result = []
+      self.my_each do |elem|
+        result << yield(elem)
+      end
+      return result
+    else
+      self.to_enum
+    end
+  end
 end
 
 # You will first have to define my_each
@@ -86,4 +98,4 @@ class Array
 end
 
 array = [2,3,4,5]
-p array.my_count{ |value| value > 3 }
+p array.my_map(&:odd?)
