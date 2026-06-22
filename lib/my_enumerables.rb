@@ -30,6 +30,15 @@ module Enumerable
       self.to_enum
     end
   end
+
+  def my_all?
+    if block_given?
+      self.my_each{|elem| return false if !yield(elem)} 
+      return true
+    else
+      return true
+    end
+  end
 end
 
 # You will first have to define my_each
@@ -41,7 +50,7 @@ class Array
   def my_each
     if block_given?
       for elem in self do
-      yield(elem)
+        yield(elem)
       end
     else 
       self.to_enum
@@ -49,8 +58,5 @@ class Array
   end
 end
 
-# array = [2, 3, 4, 5]
-# a = array.my_each_with_index do |element, index|
-#           my_each_with_index_results << [element * 2, index * 2]
-#         end
-# p a
+array = [2,3,4,5]
+p array.my_all? { |value| value > 1 }
