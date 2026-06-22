@@ -48,6 +48,15 @@ module Enumerable
       return true
     end
   end
+
+  def my_none?
+    if block_given?
+      self.my_any?{|elem| return false if yield(elem)}
+      return true
+    else 
+      return false
+    end
+  end
 end
 
 # You will first have to define my_each
@@ -68,4 +77,4 @@ class Array
 end
 
 array = [2,3,4,5]
-p array.my_any? { |value| value == 3 }
+p array.my_none? { |value| value == 1 }
