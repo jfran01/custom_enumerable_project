@@ -18,6 +18,18 @@ module Enumerable
       arr.to_enum
     end
   end
+
+  def my_select
+    if block_given?
+      result = []
+      self.my_each do |elem|
+        result << elem if yield(elem)
+      end
+      return result
+    else
+      self.to_enum
+    end
+  end
 end
 
 # You will first have to define my_each
