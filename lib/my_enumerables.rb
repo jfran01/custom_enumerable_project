@@ -39,6 +39,15 @@ module Enumerable
       return true
     end
   end
+
+  def my_any? 
+    if block_given?
+      self.my_each{|elem| return true if yield(elem)}
+      return false
+    else
+      return true
+    end
+  end
 end
 
 # You will first have to define my_each
@@ -59,4 +68,4 @@ class Array
 end
 
 array = [2,3,4,5]
-p array.my_all? { |value| value > 1 }
+p array.my_any? { |value| value == 3 }
