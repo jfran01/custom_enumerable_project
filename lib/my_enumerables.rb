@@ -57,6 +57,15 @@ module Enumerable
       return false
     end
   end
+
+  def my_count
+    if block_given?
+      result = self.my_select{|elem| yield(elem)}
+      return result.size
+    else
+      return self.size
+    end
+  end
 end
 
 # You will first have to define my_each
@@ -77,4 +86,4 @@ class Array
 end
 
 array = [2,3,4,5]
-p array.my_none? { |value| value == 1 }
+p array.my_count{ |value| value > 3 }
